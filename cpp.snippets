@@ -1,0 +1,120 @@
+snippet tp "Template for cpp file" b
+/**
+ * ${1:Code Description}
+ * Author : Adarsh A Tadimari (adarsh.tadimari@gmail.com)
+ */
+
+#include <iostream>
+#include <stdio.h>
+${2:/* Add more header files */}
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+	${3:TODO}
+
+}
+endsnippet
+
+snippet desc "Description for the file" b
+/**
+ * @project Name: ${1:Project Name}
+ * @author Adarsh A Tadimari (adarsh.tadimari@gmail.com)
+ *
+ * ${2:Description}
+ */
+endsnippet
+
+snippet ustd "Using Namespace Std" b
+using namespace std;
+endsnippet
+
+snippet fast_io "Fast Input Output Functions" 
+inline void writeInt (long long int n)
+{
+    long long int N = n, rev, count = 0;
+    rev = N;
+    if (N == 0) { putchar_unlocked('0');  return ;}
+    while ((rev % 10) == 0) { count++; rev /= 10;} //obtain the count of the number of 0s
+    rev = 0;
+    while (N != 0) { rev = (rev<<3) + (rev<<1) + N % 10; N /= 10;}  //store reverse of N in rev
+    while (rev != 0) { putchar_unlocked(rev % 10 + '0'); rev /= 10;}
+    while (count--) putchar_unlocked('0');
+}
+inline void inp( int &n )//fast input function
+{
+   n = 0;
+   int ch = getchar_unlocked();
+   int sign = 1;
+   while ((ch < '0') || (ch > '9')) 
+   {
+    if (ch == '-')
+        sign = -1; 
+    ch = getchar_unlocked();
+   }
+   while ((ch >= '0') && (ch <= '9')) 
+   {
+    n = (n<<3) + (n<<1) + ch - '0';
+    ch = getchar_unlocked();
+   }
+   n = n * sign;
+}
+endsnippet
+
+snippet Union_Find "Union Find DS" b
+class UF    {
+    int *id, cnt, *sz;
+public:
+	// Create an empty union find data structure with N isolated sets.
+    UF(int N)   {
+        cnt = N;
+	id = new int[N];
+	sz = new int[N];
+        for(int i=0; i<N; i++)	{
+            id[i] = i;
+	    sz[i] = 1;
+	}
+    }
+    ~UF()	{
+	delete [] id;
+	delete [] sz;
+    }
+	// Return the id of component corresponding to object p.
+    int find(int p)	{
+        int root = p;
+        while (root != id[root])
+            root = id[root];
+        while (p != root) {
+            int newp = id[p];
+            id[p] = root;
+            p = newp;
+        }
+        return root;
+    }
+	// Replace sets containing x and y with their union.
+    void merge(int x, int y)	{
+        int i = find(x);
+        int j = find(y);
+        if (i == j) return;
+		
+		// make smaller root point to larger one
+        if   (sz[i] < sz[j])	{ 
+		id[i] = j; 
+		sz[j] += sz[i]; 
+	} else	{ 
+		id[j] = i; 
+		sz[i] += sz[j]; 
+	}
+        cnt--;
+    }
+	// Are objects x and y in the same set?
+    bool connected(int x, int y)    {
+        return find(x) == find(y);
+    }
+	// Return the number of disjoint sets.
+    int count() {
+        return cnt;
+    }
+};
+endsnippet
+
